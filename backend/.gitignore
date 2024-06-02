@@ -1,2 +1,6 @@
 .env
 todo.md
+tmp/
+backend
+build/
+.air.toml
