@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS tasks (
 	id SERIAL PRIMARY KEY,
 	title text NOT NULL,
 	description text NOT NULL,
+	completed boolean DEFAULT FALSE,
 	user_id INTEGER REFERENCES users(id) NOT NULL,
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

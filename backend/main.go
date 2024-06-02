@@ -6,7 +6,6 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
-	"github.com/roshanlc/todos_assignment/backend/model"
 	"github.com/roshanlc/todos_assignment/backend/repository"
 	"github.com/roshanlc/todos_assignment/backend/utils/db"
 )
@@ -40,15 +39,6 @@ func main() {
 	if err != nil {
 		log.Fatal("failed to setup database tables: ", err)
 	}
-	userreq := &model.UserRequest{
-		Name:     "John Doe",
-		Email:    "doe.john@gmail.com",
-		Password: "password",
-	}
-	if err := userreq.Validate(); err != nil {
-		log.Fatal("failed to validate user request: ", err)
-	}
-	fmt.Println(repository.InsertUser(*userreq.ToUser()))
 }
 
 // loadConfig loads the configuration from the .env file

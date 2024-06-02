@@ -34,7 +34,7 @@ func (t *TaskRequest) Validate() error {
 }
 
 // toTask converts the TaskRequest to a Task
-func (t *TaskRequest) toTask(userID uint) *Task {
+func (t *TaskRequest) ToTask(userID uint) *Task {
 	return &Task{
 		Title:       t.Title,
 		Description: t.Description,
