@@ -18,14 +18,16 @@ func NewPostgresConnPool(dsn string) (*pgxpool.Pool, error) {
 	log.Println("Setting up database connection")
 	for retry := 1; retry < 4; retry++ {
 		conn, err = pgxpool.New(ctx, dsn)
-		if err != nil || conn == nil {
+		if err != nil {
 			if retry == 3 {
 				return nil, err
 			}
 			log.Println("Retrying database connection")
 			continue
 		}
+		break
 	}
+	// also make a ping to the database to check if the connection is successful
 	if err := conn.Ping(ctx); err != nil {
 		return nil, err
 	}

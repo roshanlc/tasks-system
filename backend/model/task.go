@@ -39,7 +39,6 @@ func (t *TaskRequest) toTask(userID uint) *Task {
 		Title:       t.Title,
 		Description: t.Description,
 		Completed:   false,
-		CreatedAt:   time.Now(),
 		UserID:      userID,
 	}
 }

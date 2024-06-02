@@ -6,6 +6,9 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
+	"github.com/roshanlc/todos_assignment/backend/model"
+	"github.com/roshanlc/todos_assignment/backend/repository"
+	"github.com/roshanlc/todos_assignment/backend/utils/db"
 )
 
 // Config is the configuration for the application
@@ -27,6 +30,25 @@ func main() {
 	}
 	log.Println("Configuration loaded")
 	_ = config
+
+	dbConnPool, err := db.NewPostgresConnPool(config.DatabaseURL)
+	if err != nil {
+		log.Fatal("failed to create database connection pool: ", err)
+	}
+	repository := repository.NewRepository(dbConnPool)
+	err = repository.InitialSetup() // run initial setup
+	if err != nil {
+		log.Fatal("failed to setup database tables: ", err)
+	}
+	userreq := &model.UserRequest{
+		Name:     "John Doe",
+		Email:    "doe.john@gmail.com",
+		Password: "password",
+	}
+	if err := userreq.Validate(); err != nil {
+		log.Fatal("failed to validate user request: ", err)
+	}
+	fmt.Println(repository.InsertUser(*userreq.ToUser()))
 }
 
 // loadConfig loads the configuration from the .env file
