@@ -61,11 +61,11 @@ func (s *Server) SetupRoutes() {
 	grp.GET("/users/:id", isAuthenticated, s.getUserHandler)
 
 	// task routes
-	// grp.GET("/tasks", isAuthenticated)
-	// grp.GET("/tasks/:id", isAuthenticated)
-	// grp.POST("/tasks", isAuthenticated)
-	// grp.PUT("/tasks/:id", isAuthenticated)
-	// grp.DELETE("/tasks/:id", isAuthenticated)
+	grp.GET("/tasks", isAuthenticated, s.listTaskHandler)
+	grp.GET("/tasks/:id", isAuthenticated, s.getTaskHandler)
+	grp.POST("/tasks", isAuthenticated, s.createTaskHandler)
+	grp.PUT("/tasks/:id", isAuthenticated, s.updateTaskHandler)
+	grp.DELETE("/tasks/:id", isAuthenticated, s.deleteTaskHandler)
 }
 
 // Run starts the server

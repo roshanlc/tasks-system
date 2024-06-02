@@ -22,6 +22,7 @@ type IRepository interface {
 	UpdateTask(task model.Task) (*model.Task, error)
 	FindTasksByUserID(userID uint, pagination *model.PaginationRequest) ([]model.Task, *model.PaginationResponse, error)
 	SearchTasksByUserID(userID uint, search string, pagination *model.PaginationRequest) ([]model.Task, *model.PaginationResponse, error)
+	FindTaskByIDAndUserID(taskID, userID uint) (*model.Task, error)
 }
 
 // PostgresRepository is the postgres implementation of the repository

@@ -13,7 +13,7 @@ func (s *Server) getUserHandler(ctx *gin.Context) {
 	// user id
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil || id < 1 {
-		ctx.JSON(http.StatusBadRequest, NewErrorResponse("Invalid user id, must be a positive integer value greater than 0"))
+		ctx.JSON(http.StatusBadRequest, NewErrorResponse(model.ErrInvalidUserID.Error()))
 		return
 	}
 	// only allow the user to see their own details

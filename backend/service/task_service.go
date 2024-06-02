@@ -57,3 +57,11 @@ func (s *Service) SearchTasksByUserID(userID uint, search string, pagination *mo
 	}
 	return s.repository.SearchTasksByUserID(userID, search, pagination)
 }
+
+// GetTaskByIDAndUserID fetches a task by ID and user ID
+func (s *Service) GetTaskByIDAndUserID(taskID, userID uint) (*model.Task, error) {
+	if taskID == 0 {
+		return nil, model.ErrInvalidTaskID
+	}
+	return s.repository.FindTaskByIDAndUserID(taskID, userID)
+}

@@ -198,3 +198,25 @@ func (repo *PostgresRepository) SearchTasksByUserID(userID uint, search string, 
 	paginationResp.CalculateTotalPages()
 	return tasks, paginationResp, nil
 }
+
+// FindTaskByIDAndUserID fetches a task from the database by ID and user id
+func (repo *PostgresRepository) FindTaskByIDAndUserID(taskID, userID uint) (*model.Task, error) {
+	query := `SELECT id, title, description, completed, created_at, user_id FROM tasks WHERE id = $1 AND user_id = $2`
+
+	// timeout context
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	var task model.Task
+	err := repo.ConnPool.QueryRow(ctx, query, taskID, userID).Scan(
+		&task.ID, &task.Title, &task.Description,
+		&task.Completed, &task.CreatedAt, &task.UserID)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, model.ErrRecordNotFound
+		}
+		return nil, err
+	}
+
+	return &task, nil
+}
