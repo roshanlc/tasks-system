@@ -6,10 +6,22 @@ import (
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/roshanlc/todos_assignment/backend/external"
+	"github.com/roshanlc/todos_assignment/backend/model"
 )
 
 // Repository is the interface that wraps the basic CRUD operations
-type Repository interface {
+type IRepository interface {
+	// Users
+	FindUserByID(userID uint) (*model.User, error)
+	FindUserByEmail(email string) (*model.User, error)
+	InsertUser(user model.User) (*model.User, error)
+	// Tasks
+	FindTaskByID(taskID uint) (*model.Task, error)
+	DeleteTaskByID(taskID uint) error
+	InsertTask(task model.Task) (*model.Task, error)
+	UpdateTask(task model.Task) (*model.Task, error)
+	FindTasksByUserID(userID uint, pagination *model.PaginationRequest) ([]model.Task, *model.PaginationResponse, error)
+	SearchTasksByUserID(userID uint, search string, pagination *model.PaginationRequest) ([]model.Task, *model.PaginationResponse, error)
 }
 
 // PostgresRepository is the postgres implementation of the repository
