@@ -13,4 +13,5 @@ var (
 	ErrEmptySearch        = errors.New("search query is empty")
 	ErrInvalidUserID      = errors.New("invalid user id, must be greater than 0")
 	ErrRecordNotFound     = errors.New("record not found")
+	ErrInvalidTaskID      = errors.New("invalid task id, must be greater than 0")
 )

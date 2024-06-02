@@ -75,13 +75,14 @@ func (repo *PostgresRepository) InsertTask(task model.Task) (*model.Task, error)
 func (repo *PostgresRepository) UpdateTask(task model.Task) (*model.Task, error) {
 	query := `UPDATE tasks
 	SET title = $1, description = $2, completed = $3
+	WHERE id = $4 
 	RETURNING id, title, description, completed, created_at, user_id`
 
 	// timeout context
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	err := repo.ConnPool.QueryRow(ctx, query, task.Title, task.Description, task.Completed).Scan(
+	err := repo.ConnPool.QueryRow(ctx, query, task.Title, task.Description, task.Completed, task.ID).Scan(
 		&task.ID, &task.Title,
 		&task.Description, &task.Completed,
 		&task.CreatedAt, &task.UserID)
