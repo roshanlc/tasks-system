@@ -37,7 +37,6 @@ func (u *UserRequest) Validate() error {
 // toUser converts the UserRequest to a User
 func (u *UserRequest) toUser() *User {
 	return &User{
-		ID:       0,
 		Name:     u.Name,
 		Email:    u.Email,
 		Password: u.Password,
