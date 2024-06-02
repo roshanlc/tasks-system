@@ -11,13 +11,12 @@ import (
 var SigningKey []byte
 
 // GenerateJWT generates a JWT token
-func GenerateJWT(userID uint, email, role string) (string, error) {
+func GenerateJWT(userID uint, email string) (string, error) {
 	token := jwt.New(jwt.SigningMethodHS512)
 	claims := token.Claims.(jwt.MapClaims)
 
 	claims["authorized"] = true
 	claims["email"] = email
-	claims["role"] = role
 	claims["user_id"] = userID
 	claims["exp"] = time.Now().Add(time.Hour * 3).Unix()
 

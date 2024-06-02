@@ -6,8 +6,10 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
+	"github.com/roshanlc/todos_assignment/backend/controller"
 	"github.com/roshanlc/todos_assignment/backend/repository"
 	"github.com/roshanlc/todos_assignment/backend/service"
+	"github.com/roshanlc/todos_assignment/backend/utils/auth"
 	"github.com/roshanlc/todos_assignment/backend/utils/db"
 )
 
@@ -29,7 +31,8 @@ func main() {
 		log.Fatal("failed to load configuration: ", err)
 	}
 	log.Println("Configuration loaded")
-	_ = config
+	// set singing key for JWT
+	auth.SigningKey = []byte(config.SecretKey)
 
 	dbConnPool, err := db.NewPostgresConnPool(config.DatabaseURL)
 	if err != nil {
@@ -45,7 +48,13 @@ func main() {
 
 	// get a service
 	service := service.NewService(repository)
-	_ = service
+
+	// setup and start the server
+	server := controller.NewServer(config.GinMode, service)
+	err = server.Run(config.Port)
+	if err != nil {
+		log.Fatal("failed to start server: ", err)
+	}
 }
 
 // loadConfig loads the configuration from the .env file

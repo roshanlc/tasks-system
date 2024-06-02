@@ -11,11 +11,11 @@ type PaginationRequest struct {
 
 // PaginationResponse struct holds details related to pagination response from database query
 type PaginationResponse struct {
-	Page  uint   `json:"page"`
-	Size  uint   `json:"size"`
-	Sort  string `json:"sort"`
-	Pages uint   `json:"pages"`
-	Total uint   `json:"total"`
+	Page       uint   `json:"page"`
+	Size       uint   `json:"size"`
+	Sort       string `json:"sort"`
+	TotalPages uint   `json:"total_pages"`
+	Total      uint   `json:"total"`
 }
 
 // Prerpare method sets default values for pagination
@@ -45,12 +45,12 @@ func (p *PaginationRequest) Validate() error {
 // CalculateTotalPages method calculates total pages based on total records and page size
 func (p *PaginationResponse) CalculateTotalPages() {
 	if p.Total == 0 || p.Size == 0 {
-		p.Pages = 0
+		p.TotalPages = 0
 		return
 	}
 	if p.Total%p.Size == 0 {
-		p.Pages = p.Total / p.Size
+		p.TotalPages = p.Total / p.Size
 	} else {
-		p.Pages = p.Total/p.Size + 1
+		p.TotalPages = p.Total/p.Size + 1
 	}
 }

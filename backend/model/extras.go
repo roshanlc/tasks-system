@@ -14,4 +14,5 @@ var (
 	ErrInvalidUserID      = errors.New("invalid user id, must be greater than 0")
 	ErrRecordNotFound     = errors.New("record not found")
 	ErrInvalidTaskID      = errors.New("invalid task id, must be greater than 0")
+	ErrInvalidCredentails = errors.New("invalid credentials")
 )

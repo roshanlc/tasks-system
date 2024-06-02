@@ -1,32 +1,34 @@
-package controllers
+package controller
 
 import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/roshanlc/todos_assignment/backend/service"
 )
 
 type Server struct {
-	service *service.IService
+	service service.IService
 	router  *gin.Engine
 }
 
 // NewServer creates a new server instance
-func NewServer(ginMode string, service *service.IService) *Server {
+func NewServer(ginMode string, service service.IService) *Server {
 	if ginMode == "" {
 		ginMode = gin.DebugMode
 	}
 	gin.SetMode(ginMode)
 	router := gin.Default()
 
-	return &Server{
+	server := &Server{
 		service: service,
 		router:  router,
 	}
+	// setup the routes
+	server.SetupRoutes()
+	return server
 }
 
 // SetupRoutes sets up the routes for the server
@@ -47,13 +49,13 @@ func (s *Server) SetupRoutes() {
 	})
 
 	// base path : /api/v1
-	// grp := s.Router.Group("/api/v1")
-	// grp.GET("/healthz", s.healthCheckHandler)
-	// grp.POST("/auth/check", isAuthenticated, s.authCheckHandler)
+	grp := s.router.Group("/api/v1")
+	grp.GET("/healthz", s.healthCheckHandler)
+	grp.POST("/auth/check", isAuthenticated, s.authCheckHandler)
 
 	// // auth routes
-	// grp.POST("/auth/login", s.loginHandler)
-	// grp.POST("/auth/register", s.registrationHandler)
+	grp.POST("/auth/login", s.loginHandler)
+	grp.POST("/auth/register", s.registrationHandler)
 
 	// // user routes
 	// grp.POST("/users", isAuthenticated, isAdmin, s.createUserHandler)
@@ -78,8 +80,7 @@ func (s *Server) SetupRoutes() {
 }
 
 // Run starts the server
-func (s *Server) Run() error {
-	port := os.Getenv("PORT")
+func (s *Server) Run(port string) error {
 	if port == "" {
 		port = "9000"
 	}
@@ -90,5 +91,5 @@ func (s *Server) Run() error {
 
 // healthCheckHandler is the handler for the health check endpoint
 func (s *Server) healthCheckHandler(ctx *gin.Context) {
-	// ctx.JSON(http.StatusOK, SuccessResponse{Data: "Up and running.."})
+	ctx.JSON(http.StatusOK, NewSuccessResponse("ok computer", nil))
 }
