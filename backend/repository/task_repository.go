@@ -2,9 +2,11 @@ package repository
 
 import (
 	"context"
+	"errors"
 	"strings"
 	"time"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/roshanlc/todos_assignment/backend/model"
 )
 
@@ -21,6 +23,9 @@ func (repo *PostgresRepository) FindTaskByID(taskID uint) (*model.Task, error) {
 		&task.ID, &task.Title, &task.Description,
 		&task.Completed, &task.CreatedAt, &task.UserID)
 	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, model.ErrRecordNotFound
+		}
 		return nil, err
 	}
 

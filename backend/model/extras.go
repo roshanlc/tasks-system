@@ -11,4 +11,6 @@ var (
 	ErrNotUpdated         = errors.New("row(s) could not be updated")
 	ErrInvalidPagination  = errors.New("invalid or null pagination values")
 	ErrEmptySearch        = errors.New("search query is empty")
+	ErrInvalidUserID      = errors.New("invalid user id, must be greater than 0")
+	ErrRecordNotFound     = errors.New("record not found")
 )

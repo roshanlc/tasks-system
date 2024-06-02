@@ -2,9 +2,11 @@ package repository
 
 import (
 	"context"
+	"errors"
 	"strings"
 	"time"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/roshanlc/todos_assignment/backend/model"
 )
 
@@ -21,6 +23,9 @@ func (repo *PostgresRepository) FindUserByID(userID uint) (*model.User, error) {
 		&user.ID, &user.Name, &user.Email,
 		&user.Password, &user.CreatedAt)
 	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, model.ErrRecordNotFound
+		}
 		return nil, err
 	}
 
@@ -29,7 +34,7 @@ func (repo *PostgresRepository) FindUserByID(userID uint) (*model.User, error) {
 
 // FindUserByEmail fetches a user from the database by email
 func (repo *PostgresRepository) FindUserByEmail(email string) (*model.User, error) {
-	query := `SELECT id, name, email, password created_at FROM users WHERE email = $1`
+	query := `SELECT id, name, email, password, created_at FROM users WHERE email = $1`
 
 	// timeout context
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -40,6 +45,9 @@ func (repo *PostgresRepository) FindUserByEmail(email string) (*model.User, erro
 		&user.ID, &user.Name, &user.Email,
 		&user.Password, &user.CreatedAt)
 	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, model.ErrRecordNotFound
+		}
 		return nil, err
 	}
 

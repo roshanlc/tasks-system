@@ -7,6 +7,7 @@ import (
 
 	"github.com/joho/godotenv"
 	"github.com/roshanlc/todos_assignment/backend/repository"
+	"github.com/roshanlc/todos_assignment/backend/service"
 	"github.com/roshanlc/todos_assignment/backend/utils/db"
 )
 
@@ -34,11 +35,17 @@ func main() {
 	if err != nil {
 		log.Fatal("failed to create database connection pool: ", err)
 	}
+	// get a repository
 	repository := repository.NewRepository(dbConnPool)
 	err = repository.InitialSetup() // run initial setup
 	if err != nil {
 		log.Fatal("failed to setup database tables: ", err)
 	}
+	log.Println("Database setup completed")
+
+	// get a service
+	service := service.NewService(repository)
+	_ = service
 }
 
 // loadConfig loads the configuration from the .env file
