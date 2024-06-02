@@ -58,25 +58,14 @@ func (s *Server) SetupRoutes() {
 	grp.POST("/auth/register", s.registrationHandler)
 
 	// // user routes
-	// grp.POST("/users", isAuthenticated, isAdmin, s.createUserHandler)
-	// grp.GET("/users", isAuthenticated, isAdmin, s.listUsersHandler)
-	// grp.GET("/users/:id", isAuthenticated, isAdmin, s.getUserHandler)
-	// grp.PUT("/users/:id", isAuthenticated, isAdmin, s.updateUserHandler)
-	// grp.DELETE("/users/:id", isAuthenticated, isAdmin, s.deleteUserHandler)
+	grp.GET("/users/:id", isAuthenticated, s.getUserHandler)
 
-	// // artist routes
-	// grp.GET("/artists", isAuthenticated, isAdminOrArtistManager, s.listArtistsHandler)
-	// grp.GET("/artists/:id", isAuthenticated, isAdminOrArtistManager, s.getArtistHandler)
-	// grp.POST("/artists", isAuthenticated, isAdminOrArtistManager, s.createArtistHandler)
-	// grp.PUT("/artists/:id", isAuthenticated, isAdminOrArtistManager, s.updateArtistHandler)
-	// grp.DELETE("/artists/:id", isAuthenticated, isAdminOrArtistManager, s.deleteAristHandler)
-
-	// // music records routes
-	// grp.GET("/artists/:id/musics", isAuthenticated, s.listMusicByArtistHandler)
-	// grp.POST("/artists/:id/musics", isAuthenticated, s.createNewMusicHandler)
-	// grp.PUT("/artists/:id/musics", isAuthenticated, s.updateMusicHandler)
-	// grp.DELETE("/artists/:id/musics", isAuthenticated, s.deleteMusicHandler)
-
+	// task routes
+	// grp.GET("/tasks", isAuthenticated)
+	// grp.GET("/tasks/:id", isAuthenticated)
+	// grp.POST("/tasks", isAuthenticated)
+	// grp.PUT("/tasks/:id", isAuthenticated)
+	// grp.DELETE("/tasks/:id", isAuthenticated)
 }
 
 // Run starts the server

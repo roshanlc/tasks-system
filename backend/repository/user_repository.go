@@ -12,7 +12,7 @@ import (
 
 // FindUserByID fetches a user from the database by ID
 func (repo *PostgresRepository) FindUserByID(userID uint) (*model.User, error) {
-	query := `SELECT id, name, email, password created_at FROM users WHERE id = $1`
+	query := `SELECT id, name, email, password, created_at FROM users WHERE id = $1`
 
 	// timeout context
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)

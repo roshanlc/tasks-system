@@ -12,7 +12,6 @@ import (
 
 type UserHeaderDetails struct {
 	ID    uint
-	Role  string
 	Email string
 }
 
@@ -69,25 +68,8 @@ func GetDetailsFromHeader(ctx *gin.Context) UserHeaderDetails {
 	claims := tokenVal.Claims.(jwt.MapClaims)
 	userID := uint(claims["user_id"].(float64))
 	email := claims["email"].(string)
-	role := claims["role"].(string)
 	return UserHeaderDetails{
 		ID:    userID,
-		Role:  role,
 		Email: email,
 	}
-}
-
-// isAdmin is a middleware to check if the user requesting is admin.
-// Only to be used after isAuthenticated middleware
-func isAdmin(ctx *gin.Context) {
-	// get token details
-	tokenDetails := GetDetailsFromHeader(ctx)
-
-	if !strings.EqualFold(tokenDetails.Role, "super_admin") {
-		ctx.JSON(http.StatusForbidden, NewErrorResponse("unauthorized access"))
-		ctx.Abort()
-		return
-	}
-	// Pass to next handler
-	ctx.Next()
 }
