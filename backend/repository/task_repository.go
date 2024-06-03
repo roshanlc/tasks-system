@@ -10,6 +10,17 @@ import (
 	"github.com/roshanlc/todos_assignment/backend/model"
 )
 
+// ITaskRepository is the interface that wraps the basic CRUD operations for the task entity
+type ITaskRepository interface {
+	FindTaskByID(taskID uint) (*model.Task, error)
+	DeleteTaskByID(taskID uint) error
+	InsertTask(task model.Task) (*model.Task, error)
+	UpdateTask(task model.Task) (*model.Task, error)
+	FindTasksByUserID(userID uint, pagination *model.PaginationRequest) ([]model.Task, *model.PaginationResponse, error)
+	SearchTasksByUserID(userID uint, search string, pagination *model.PaginationRequest) ([]model.Task, *model.PaginationResponse, error)
+	FindTaskByIDAndUserID(taskID, userID uint) (*model.Task, error)
+}
+
 // FindTaskByID fetches a task from the database by ID
 func (repo *PostgresRepository) FindTaskByID(taskID uint) (*model.Task, error) {
 	query := `SELECT id, title, description, completed, created_at, user_id FROM tasks WHERE id = $1`

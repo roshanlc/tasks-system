@@ -10,6 +10,13 @@ import (
 	"github.com/roshanlc/todos_assignment/backend/model"
 )
 
+// IUserRepository is the interface that wraps the basic CRUD operations for the user entity
+type IUserRepository interface {
+	FindUserByID(userID uint) (*model.User, error)
+	FindUserByEmail(email string) (*model.User, error)
+	InsertUser(user model.User) (*model.User, error)
+}
+
 // FindUserByID fetches a user from the database by ID
 func (repo *PostgresRepository) FindUserByID(userID uint) (*model.User, error) {
 	query := `SELECT id, name, email, password, created_at FROM users WHERE id = $1`

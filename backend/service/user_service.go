@@ -9,6 +9,12 @@ import (
 	"github.com/roshanlc/todos_assignment/backend/utils/auth"
 )
 
+type IUserService interface {
+	CreateUser(user *model.User) (*model.User, error)
+	GetUserByEmail(email string) (*model.User, error)
+	GetUserByID(userID uint) (*model.User, error)
+}
+
 // CreateUser creates a new user.
 // It returns the created user and an error if something went wrong.
 func (s *Service) CreateUser(user *model.User) (*model.User, error) {

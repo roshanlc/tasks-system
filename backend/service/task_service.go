@@ -6,6 +6,16 @@ import (
 	"github.com/roshanlc/todos_assignment/backend/model"
 )
 
+type ITaskService interface {
+	GetTaskByIDAndUserID(taskID, userID uint) (*model.Task, error)
+	CreateTask(task model.Task) (*model.Task, error)
+	GetTaskByID(taskID uint) (*model.Task, error)
+	DeleteTaskByID(taskID uint) error
+	UpdateTask(task model.Task) (*model.Task, error)
+	GetTasksByUserID(userID uint, pagination *model.PaginationRequest) ([]model.Task, *model.PaginationResponse, error)
+	SearchTasksByUserID(userID uint, search string, pagination *model.PaginationRequest) ([]model.Task, *model.PaginationResponse, error)
+}
+
 // CreateTask creates a new task.
 func (s *Service) CreateTask(task model.Task) (*model.Task, error) {
 	newTask, err := s.repository.InsertTask(task)
