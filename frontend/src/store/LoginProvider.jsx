@@ -13,7 +13,7 @@ const initialLoginState = {
     isLogged: false,
     token: null,
     decodedToken: null,
-    role: null,
+    user_id: 0,
 }
 
 const LoginProvider = ({ children }) => {

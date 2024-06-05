@@ -78,7 +78,7 @@ export default function App() {
     // check for saved page location
     const navigate = useNavigate()
     useEffect(() => {
-    // fetch path from session storage
+        // fetch path from session storage
         const pathFromSession = sessionStorage.getItem("path")
         // redirect to the last page
         if (pathFromSession !== undefined && pathFromSession !== null) {
@@ -87,8 +87,8 @@ export default function App() {
     }, [])
 
     useEffect(() => {
-    // if not logged in and there is a token in local storage
-    // check for validity
+        // if not logged in and there is a token in local storage
+        // check for validity
         if (!loginState.isLogged && hasTokenInLocalStorage()) {
             validateToken(fetchTokenFromLocalStorage())
         }
@@ -116,29 +116,7 @@ export default function App() {
                         path="/dashboard"
                         element={
                             <ProtectedRoute>
-                                <ResponsiveDrawer>
-                                    <Dashboard />
-                                </ResponsiveDrawer>
-                            </ProtectedRoute>
-                        }
-                    />
-                    <Route
-                        path="/artists"
-                        element={
-                            <ProtectedRoute>
-                                <ResponsiveDrawer>
-                                    <ListArtists />
-                                </ResponsiveDrawer>
-                            </ProtectedRoute>
-                        }
-                    />
-                    <Route
-                        path="/artists/:id/music"
-                        element={
-                            <ProtectedRoute>
-                                <ResponsiveDrawer>
-                                    <ListMusic />
-                                </ResponsiveDrawer>
+                                <Dashboard />
                             </ProtectedRoute>
                         }
                     />

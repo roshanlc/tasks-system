@@ -34,6 +34,7 @@ import * as yup from "yup"
 import { useContext } from "react"
 import { LoginContext } from "../../../store/LoginProvider"
 import { convertDateFormat } from "../../../utils/utils"
+import Appbar from "../Dashboard/Appbar"
 
 const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL // fetching from .env file
 
@@ -152,7 +153,7 @@ const ListUsers = () => {
 
     // edit user data
     const handleEditUser = (userId) => {
-    // Find the user by ID from the filtered users list
+        // Find the user by ID from the filtered users list
         const user = users.find((user) => user.id === userId)
         if (user) {
             setEditUser({
@@ -203,7 +204,7 @@ const ListUsers = () => {
     }
 
     const handleDeleteUser = (userId) => {
-    // Find the user by ID from the filtered users list
+        // Find the user by ID from the filtered users list
         const user = users.find((user) => user.id === userId)
         if (user) {
             setEditUser({
@@ -250,7 +251,7 @@ const ListUsers = () => {
     }
 
     const handleCancelDelete = () => {
-    // Close the delete confirmation dialog
+        // Close the delete confirmation dialog
         setDeleteDialogOpen(false)
     }
 
@@ -283,7 +284,7 @@ const ListUsers = () => {
                         startIcon={<EditIcon />}
                         onClick={() => handleEditUser(params.row.id)}
                     >
-            Edit
+                        Edit
                     </Button>
                     <Button
                         variant="outlined"
@@ -294,7 +295,7 @@ const ListUsers = () => {
                         startIcon={<DeleteForeverIcon />}
                         onClick={() => handleDeleteUser(params.row.id)}
                     >
-            Delete
+                        Delete
                     </Button>
                 </Box>
             ),
@@ -303,6 +304,7 @@ const ListUsers = () => {
 
     return (
         <Box>
+            <Appbar/>
             <Stack direction="row" gap={1}>
                 <Button
                     variant="contained"
@@ -317,7 +319,7 @@ const ListUsers = () => {
                         marginLeft: "auto",
                     }}
                 >
-          Add User
+                    Add User
                 </Button>
             </Stack>
             <Box>
@@ -502,7 +504,7 @@ const ListUsers = () => {
                                 sx={{ marginTop: 2 }}
                             >
                                 <Typography sx={{ fontSize: "0.94rem" }}>
-                  Submit
+                                    Submit
                                 </Typography>
                             </Button>
                         </Box>
@@ -515,7 +517,7 @@ const ListUsers = () => {
                         startIcon={<CloseIcon />}
                         variant="outlined"
                     >
-            Close
+                        Close
                     </Button>
                 </DialogActions>
             </Dialog>
@@ -584,14 +586,14 @@ const ListUsers = () => {
                         variant="contained"
                         startIcon={<AddIcon />}
                     >
-            Update
+                        Update
                     </Button>
                     <Button
                         onClick={() => setEditDialogOpen(false)}
                         startIcon={<CloseIcon />}
                         variant="outlined"
                     >
-            Cancel
+                        Cancel
                     </Button>
                 </DialogActions>
             </Dialog>
@@ -636,7 +638,7 @@ const ListUsers = () => {
                     </Stack>
                     <Divider />
                     <Typography variant="h5" sx={{ m: 1 }}>
-            Are you sure you want to delete this user?
+                        Are you sure you want to delete this user?
                     </Typography>
                 </DialogContent>
                 <Divider sx={{ marginTop: 1 }} />
@@ -647,7 +649,7 @@ const ListUsers = () => {
                         startIcon={<CloseIcon />}
                         variant="outlined"
                     >
-            Cancel
+                        Cancel
                     </Button>
                     <Button
                         onClick={handleConfirmDelete}
@@ -658,7 +660,7 @@ const ListUsers = () => {
                         }}
                         startIcon={<DeleteIcon />}
                     >
-            Delete
+                        Delete
                     </Button>
                 </DialogActions>
             </Dialog>

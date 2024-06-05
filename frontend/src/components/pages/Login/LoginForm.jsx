@@ -72,9 +72,7 @@ const LoginForm = () => {
             if (response.ok) {
                 // Login success
                 const resp = await response.json()
-
                 setLoginSuccess("Login successful!")
-
                 toast.success("Login successful!")
 
                 // dispatch new login action for login context
@@ -82,7 +80,7 @@ const LoginForm = () => {
                     type: "LOGIN",
                     payload: {
                         token: resp.data.token,
-                        role: resp.data.user.role,
+                        user_id : resp.data.user.id
                     },
                 })
             } else if (response.status === 401 || response.status === 400) {

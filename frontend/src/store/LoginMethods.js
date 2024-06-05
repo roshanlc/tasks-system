@@ -51,17 +51,6 @@ export const decodeToken = (token) => {
     return jwtDecode(token)
 }
 
-/**
- * Check if the roles array has a specific role
- */
-export const hasRole = (role, rolesArr) => {
-    for (const r of rolesArr) {
-        if (r === role) {
-            return true
-        }
-    }
-    return false
-}
 
 /**
  * Checks the expiry  of token
@@ -88,7 +77,7 @@ export const LoginReducer = (state, action) => {
             isLogged: true,
             token: action.payload.token,
             decodedToken: decodeToken(action.payload.token),
-            role: action.payload.role,
+            user_id: action.payload.user_id,
         }
 
     case "LOGOUT":
@@ -99,17 +88,17 @@ export const LoginReducer = (state, action) => {
             isLogged: false,
             token: null,
             decodedToken: null,
-            role: null
+            user_id: 0
         }
 
     case "LOGOUT_NETWORK_ISSUE":
-    // this logs out user but does not remove the token.
+        // this logs out user but does not remove the token.
         return {
             ...state,
             isLogged: false,
             token: null,
             decodedToken: null,
-            role: null
+            user_id: 0,
         }
 
     default:
