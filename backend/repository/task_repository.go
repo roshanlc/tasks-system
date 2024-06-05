@@ -144,11 +144,23 @@ func (repo *PostgresRepository) FindTasksByUserID(userID uint, pagination *model
 		}
 		tasks = append(tasks, task)
 	}
+
+	// timeout context
+	ctx, cancel = context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	// get total tasks associated with a user
+	query = `SELECT COUNT(id) from tasks WHERE user_id = $1`
+	var total uint
+	err = repo.ConnPool.QueryRow(ctx, query, userID).Scan(&total)
+	if err != nil {
+		return nil, nil, err
+	}
 	paginationResp := &model.PaginationResponse{
 		Page:  pagination.Page,
 		Size:  pagination.Size,
 		Sort:  pagination.Sort,
-		Total: uint(len(tasks)),
+		Total: total,
 	}
 	// calc total pages
 	paginationResp.CalculateTotalPages()
@@ -199,11 +211,22 @@ func (repo *PostgresRepository) SearchTasksByUserID(userID uint, search string, 
 		}
 		tasks = append(tasks, task)
 	}
+	// timeout context
+	ctx, cancel = context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	// get total tasks associated with a user
+	query = `SELECT COUNT(id) from tasks WHERE user_id = $1`
+	var total uint
+	err = repo.ConnPool.QueryRow(ctx, query, userID).Scan(&total)
+	if err != nil {
+		return nil, nil, err
+	}
 	paginationResp := &model.PaginationResponse{
 		Page:  pagination.Page,
 		Size:  pagination.Size,
 		Sort:  pagination.Sort,
-		Total: uint(len(tasks)),
+		Total: total,
 	}
 	// calc total pages
 	paginationResp.CalculateTotalPages()

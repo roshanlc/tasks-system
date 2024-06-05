@@ -4,9 +4,9 @@ import "errors"
 
 // PaginationRequest struct holds details related to pagination from request
 type PaginationRequest struct {
-	Page uint   `json:"page"`
-	Size uint   `json:"size"`
-	Sort string `json:"sort"`
+	Page uint   `form:"page"`
+	Size uint   `form:"size"`
+	Sort string `form:"sort"`
 }
 
 // PaginationResponse struct holds details related to pagination response from database query
@@ -23,8 +23,8 @@ func (p *PaginationRequest) Prepare() {
 	if p.Page == 0 {
 		p.Page = 1
 	}
-	if p.Size == 0 {
-		p.Size = 10
+	if p.Size < 5 {
+		p.Size = 5
 	}
 	if p.Sort == "" {
 		p.Sort = "asc"

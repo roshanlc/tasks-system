@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"log"
 	"net/http"
 	"strconv"
 
@@ -47,9 +48,9 @@ func (s *Server) listTaskHandler(ctx *gin.Context) {
 
 	// get user id from token
 	userDetails := GetDetailsFromHeader(ctx)
-
 	tasks, pagResp, err := s.service.GetTasksByUserID(userDetails.ID, &pag)
 	if err != nil {
+		log.Println("listTaskHandler:: Internal Server Error: ", err)
 		ctx.JSON(http.StatusInternalServerError, NewErrorResponse(err.Error()))
 		return
 	}
@@ -109,7 +110,7 @@ func (s *Server) createTaskHandler(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, NewErrorResponse(err.Error()))
 		return
 	}
-	ctx.JSON(http.StatusOK, NewSuccessResponse(task, nil))
+	ctx.JSON(http.StatusCreated, NewSuccessResponse(task, nil))
 }
 
 // updateTaskHandler handles update request for a task
