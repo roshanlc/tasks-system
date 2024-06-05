@@ -7,9 +7,6 @@ import { useQuery } from '@tanstack/react-query'
 const useTasks = (page = 1) => {
     const { loginState } = useContext(LoginContext)
 
-
-    console.log("called for page value = ", page) // TODO: remove this later
-
     // default values for pagination
     if (page < 1) {
         page = 1

@@ -11,7 +11,7 @@ import toTimeAgo from "../../../../utils/utils"
 
 export default function Task({ task, editAction, markCompleteAction, deletionAction }) {
     return (
-        <Card variant="outlined" sx={{ maxWidth: 500 }}>
+        <Card variant="outlined">
             <Box sx={{ p: 2 }}>
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
                     <Typography gutterBottom variant="h5" component="div">
@@ -28,7 +28,8 @@ export default function Task({ task, editAction, markCompleteAction, deletionAct
             </Box>
             <Divider />
             <Stack direction="row" sx={{ float: 'right', marginRight: 3 }}>
-                <IconButton aria-label="edit" disabled={task?.completed || false}>
+                <IconButton aria-label="edit" disabled={task?.completed || false}
+                    onClick={editAction}>
                     <EditIcon color="primary" />
                 </IconButton>
                 <IconButton aria-label="mark-complete">
