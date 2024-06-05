@@ -21,6 +21,18 @@ import LoginIcon from "@mui/icons-material/Login"
 
 const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL // fetching from .env file
 
+// validation schema for login form
+const validationSchema = yup.object({
+    email: yup
+        .string()
+        .email("Please enter a valid email address")
+        .required("Email field is required"),
+    password: yup
+        .string()
+        .min(5, "The minimum length of Password is 6 characters")
+        .required("Password field is required"),
+})
+
 /**
  * LoginForm Component
  */
@@ -93,17 +105,6 @@ const LoginForm = () => {
         setLoading(false)
     }
 
-    const validationSchema = yup.object({
-        email: yup
-            .string()
-            .email("Please enter a valid email address")
-            .required("Email field is required"),
-        password: yup
-            .string()
-            .min(5, "The minimum length of Password is 6 characters")
-            .required("Password field is required"),
-    })
-
     const formik = useFormik({
         initialValues,
         onSubmit,
@@ -118,20 +119,6 @@ const LoginForm = () => {
                     flexDirection="column"
                     justifyContent="center"
                     alignItems="center"
-                    fontFamily={{
-                        fontFamily: [
-                            "-apple-system",
-                            "BlinkMacSystemFont",
-                            '"Segoe UI"',
-                            "Roboto",
-                            '"Helvetica Neue"',
-                            "Arial",
-                            "sans-serif",
-                            '"Apple Color Emoji"',
-                            '"Segoe UI Emoji"',
-                            '"Segoe UI Symbol"',
-                        ].join(","),
-                    }}
                 >
                     <Box
                         color="black" //box component inside outer container
@@ -143,7 +130,7 @@ const LoginForm = () => {
                             <Typography variant="h3">Todos - Get it done</Typography>
                             <Box marginTop={1}>
                                 <Typography variant="h8">
-                                        Sign in with your email and password
+                                    Sign in with your email and password
                                 </Typography>
                             </Box>
                         </Box>
@@ -246,9 +233,7 @@ const LoginForm = () => {
                                         Register a new account
                                     </Typography>
                                 </Link>
-
                             </Stack>
-
                         </Paper>
                     </Box>
                 </Box>
