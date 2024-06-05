@@ -35,6 +35,7 @@ import { useContext } from "react"
 import { LoginContext } from "../../../store/LoginProvider"
 import { convertDateFormat } from "../../../utils/utils"
 import Appbar from "../Dashboard/Appbar"
+import Task from "../Dashboard/Task/Task"
 
 const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL // fetching from .env file
 
@@ -142,7 +143,7 @@ const ListUsers = () => {
                 setUsers(response.data)
             })
             .catch((error) => {
-                console.error("Error fetching filtered users:", error)
+                
             })
     }
 
@@ -190,7 +191,7 @@ const ListUsers = () => {
                 }
             })
             .catch((error) => {
-                console.error("Error updating user:", error)
+                
                 toast.error("Error updating user")
             })
     }
@@ -241,11 +242,11 @@ const ListUsers = () => {
                     }
                 })
                 .catch((error) => {
-                    console.error("Error deleting user:", error)
+                    
                     toast.error("Error deleting user")
                 })
         } catch (error) {
-            console.error("Error deleting user:", error)
+            
             toast.error("Error deleting user")
         }
     }
@@ -305,23 +306,26 @@ const ListUsers = () => {
     return (
         <Box>
             <Appbar/>
-            <Stack direction="row" gap={1}>
+            <Stack direction="row" gap={1} mt={1}>
                 <Button
                     variant="contained"
+                    color="success"
                     startIcon={<AddCircleIcon />}
                     onClick={() => {
                         setAddUserToggle(true)
                     }}
                     sx={{
                         alignSelf: "center",
-                        padding: 1,
+                        padding: 1.5,
                         margin: 1,
                         marginLeft: "auto",
                     }}
                 >
-                    Add User
+                    Add Task
                 </Button>
             </Stack>
+
+            <Task/>
             <Box>
                 {users == null || (users?.length === 0) ? (
                     <Typography>No users found </Typography>

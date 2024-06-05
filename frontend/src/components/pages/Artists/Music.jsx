@@ -133,7 +133,7 @@ export default function ListMusic() {
                 setMusic(arr)
             })
             .catch((error) => {
-                console.error("Error fetching music: ", error)
+                
             })
     }
 
@@ -182,7 +182,7 @@ export default function ListMusic() {
                 }
             })
             .catch((error) => {
-                console.error("Error updating music record:", error)
+                
                 toast.error("Error updating music record")
             })
     }
@@ -233,11 +233,11 @@ export default function ListMusic() {
                     }
                 })
                 .catch((error) => {
-                    console.error("Error deleting music record:", error)
+                    
                     toast.error("Error deleting music record")
                 })
         } catch (error) {
-            console.error("Error deleting music record:", error)
+            
             toast.error("Error deleting music record")
         }
     }

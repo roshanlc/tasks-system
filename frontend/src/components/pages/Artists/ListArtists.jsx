@@ -139,7 +139,7 @@ const ListArtists = () => {
                 setUsers(response.data)
             })
             .catch((error) => {
-                console.error("Error fetching artists:", error)
+                
             })
     }
 
@@ -199,7 +199,7 @@ const ListArtists = () => {
                 }
             })
             .catch((error) => {
-                console.error("Error updating user:", error)
+                
                 toast.error("Error updating user")
             })
     }
@@ -250,11 +250,11 @@ const ListArtists = () => {
                     }
                 })
                 .catch((error) => {
-                    console.error("Error deleting user:", error)
+                    
                     toast.error("Error deleting user")
                 })
         } catch (error) {
-            console.error("Error deleting user:", error)
+            
             toast.error("Error deleting user")
         }
     }

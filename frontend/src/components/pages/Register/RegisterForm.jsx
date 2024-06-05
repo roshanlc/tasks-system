@@ -92,12 +92,12 @@ const RegistrationForm = () => {
                 // send toast
                 toast.error(data.error.message || "Please try again")
             } else {
-                console.error("Registration failed:", response)
+                
                 setLoginError("An error occurred during registration. Please try again.")
                 toast.error("An error occurred during registration. Please try again.")
             }
         } catch (err) {
-            console.error("Registration failed:", err) // Most probably, network problem
+            
             setLoginError("An error occurred during registration. Please try again.")
             toast.error("An error occurred during registration. Please try again.")
         }

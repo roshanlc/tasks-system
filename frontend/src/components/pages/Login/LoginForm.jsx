@@ -90,12 +90,12 @@ const LoginForm = () => {
                 // send toast
                 toast.error(data.error.message || "Invalid email or password!")
             } else {
-                console.error("Login failed:", response)
+                
                 setLoginError("An error occurred during login. Please try again.")
                 toast.error("An error occurred during login. Please try again.")
             }
         } catch (err) {
-            console.error("Login failed:", err) // Most probably, network problem
+            
             setLoginError("An error occurred during login. Please try again.")
             toast.error("An error occurred during login. Please try again.")
         }

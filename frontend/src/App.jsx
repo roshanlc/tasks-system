@@ -17,9 +17,6 @@ import { useNavigate } from "react-router-dom"
 import ProtectedRoute from "./components/ProtectedRoute"
 import RegistrationForm from "./components/pages/Register/RegisterForm"
 import Dashboard from "./components/pages/Dashboard/Dashboard"
-import ResponsiveDrawer from "./components/pages/Dashboard/ResponsiveDrawer"
-import ListArtists from "./components/pages/Artists/ListArtists"
-import ListMusic from "./components/pages/Artists/Music"
 
 const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL // fetching from .env file
 const tokenValidationUrl = VITE_BACKEND_URL + "/auth/check"
