@@ -100,7 +100,7 @@ const LoginForm = () => {
             .required("Email field is required"),
         password: yup
             .string()
-            .min(5, "The minimum length of Password is 5 characters")
+            .min(5, "The minimum length of Password is 6 characters")
             .required("Password field is required"),
     })
 
@@ -140,10 +140,10 @@ const LoginForm = () => {
                         sx={{ marginTop: 2, marginBottom: 10 }}
                     >
                         <Box sx={{ marginTop: 2 }}>
-                            <Typography variant="h3">Artist Dashboard - Cloco Nepal Assignment</Typography>
+                            <Typography variant="h3">Todos - Get it done</Typography>
                             <Box marginTop={1}>
                                 <Typography variant="h8">
-                  Sign in with your email and password
+                                        Sign in with your email and password
                                 </Typography>
                             </Box>
                         </Box>
@@ -243,7 +243,7 @@ const LoginForm = () => {
                                     onClick={() => navigate("/register")}
                                 >
                                     <Typography sx={{ fontSize: "1rem" }}>
-                    Register a new account
+                                        Register a new account
                                     </Typography>
                                 </Link>
 

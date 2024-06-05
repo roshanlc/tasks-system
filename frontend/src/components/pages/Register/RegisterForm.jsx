@@ -42,13 +42,7 @@ const RegistrationForm = () => {
     const initialValues = {
         email: "",
         password: "",
-        role: "",
-        first_name: "",
-        last_name: "",
-        phone: "",
-        dob: "",
-        gender: "",
-        address: "",
+        name: "",
     }
 
     const [loginError, setLoginError] = useState("")
@@ -56,14 +50,6 @@ const RegistrationForm = () => {
     const [loading, setLoading] = useState(false)
 
     const onSubmit = async (values) => {
-        let payload = values
-
-        // set role as super_admin
-        payload.role = "super_admin"
-        // convert date into timestamp
-        let timestamp = convertDateFormat(values.dob)
-        payload.dob = timestamp
-
         setLoading(true)
         setLoginError("")
         setRegisterSuccess("")
@@ -118,17 +104,8 @@ const RegistrationForm = () => {
             .string()
             .min(5, "The minimum length of Password is 6 characters")
             .required("Password field is required"),
-        first_name: yup.string().required("First name is required"),
-        last_name: yup.string().required("Last name is required"),
-        phone: yup.string().min(10).max(10).required("Phone number is required"),
-        dob: yup.date().required("Date of birth is required"),
-        gender: yup.string().oneOf(["m", "f", "o"]).required("Gender is required"),
-        address: yup.string().required("Address is required"),
+        name: yup.string().required("Nname is required"),
     })
-    // role: yup
-    //   .string().
-    //   oneOf(["super_admin", "artist_manager", "artist"])
-    //   .required("Role is required"),
 
     const formik = useFormik({
         initialValues,
@@ -168,7 +145,7 @@ const RegistrationForm = () => {
                         <Typography variant="h3">Artist Dashboard - Cloco Nepal Assignment</Typography>
                         <Box marginTop={1}>
                             <Typography variant="h8">
-                Sign in with your email and password
+                                Sign in with your email and password
                             </Typography>
                         </Box>
                     </Box>
@@ -223,104 +200,20 @@ const RegistrationForm = () => {
                                     fullWidth
                                     margin="normal"
                                 />
-                                <Stack direction="row" gap={1}>
-                                    < TextField
-                                        id="first_name"
-                                        name="first_name"
-                                        label="First Name *"
-                                        type="text"
-                                        variant="outlined"
-                                        {...formik.getFieldProps("first_name")}
-                                        error={formik.touched.first_name && formik.errors.first_name}
-                                        helperText={
-                                            formik.touched.first_name && formik.errors.first_name
-                                        }
-                                        // fullWidth
-                                        margin="normal"
-                                    />
-                                    <TextField
-                                        id="last_name"
-                                        name="last_name"
-                                        label="Last Name *"
-                                        type="text"
-                                        variant="outlined"
-                                        {...formik.getFieldProps("last_name")}
-                                        error={formik.touched.last_name && formik.errors.last_name}
-                                        helperText={
-                                            formik.touched.last_name && formik.errors.last_name
-                                        }
-                                        // fullWidth
-                                        margin="normal"
-                                    />
-                                </Stack>
-                                <Stack direction="row" gap={1}>
-                                    < TextField
-                                        id="phone"
-                                        name="phone"
-                                        label="Phone *"
-                                        type="text"
-                                        variant="outlined"
-                                        {...formik.getFieldProps("phone")}
-                                        error={formik.touched.phone && formik.errors.phone}
-                                        helperText={
-                                            formik.touched.phone && formik.errors.phone
-                                        }
-                                        // fullWidth
-                                        margin="normal"
-                                    />
-                                    <TextField
-                                        id="address"
-                                        name="address"
-                                        label="Address *"
-                                        type="text"
-                                        variant="outlined"
-                                        {...formik.getFieldProps("address")}
-                                        error={formik.touched.address && formik.errors.address}
-                                        helperText={
-                                            formik.touched.address && formik.errors.address
-                                        }
-                                        // fullWidth
-                                        margin="normal"
-                                    />
-                                </Stack>
-
-                                <Stack direction="row" gap={1}>
-                                    <Box>
-
-                                        <InputLabel id="gender-label">Gender</InputLabel>
-                                        < Select
-                                            labelId="gender-label"
-                                            label="Gender"
-                                            id="gender"
-                                            variant="outlined"
-                                            {...formik.getFieldProps("gender")}
-                                            error={formik.touched.gender && formik.errors.gender}
-                                            helperText={
-                                                formik.touched.gender && formik.errors.gender
-                                            }
-                                            fullWidth
-                                            margin="normal"
-                                        >
-                                            <MenuItem value={'m'}>Male</MenuItem>
-                                            <MenuItem value={'f'}>Female</MenuItem>
-                                            <MenuItem value={'o'}>Other</MenuItem>
-                                        </Select>
-                                    </Box>
-                                    <TextField
-                                        id="dob"
-                                        name="dob"
-                                        label="Date of Birth (YYYY-MM-DD)*"
-                                        variant="outlined"
-                                        {...formik.getFieldProps("dob")}
-                                        error={formik.touched.dob && formik.errors.dob}
-                                        helperText={
-                                            formik.touched.dob && formik.errors.dob
-                                        }
-                                        fullWidth
-                                        margin="normal"
-                                    />
-                                </Stack>
-
+                                < TextField
+                                    id="name"
+                                    name="name"
+                                    label="Name *"
+                                    type="text"
+                                    variant="outlined"
+                                    {...formik.getFieldProps("name")}
+                                    error={formik.touched.name && formik.errors.name}
+                                    helperText={
+                                        formik.touched.name && formik.errors.name
+                                    }
+                                    fullWidth
+                                    margin="normal"
+                                />
 
                                 <Button
                                     type="submit"
@@ -366,7 +259,7 @@ const RegistrationForm = () => {
                                 onClick={() => navigate("/")}
                             >
                                 <Typography sx={{ fontSize: "1rem" }}>
-                  Take me to Login
+                                    Take me to Login
                                 </Typography>
                             </Link>
 
