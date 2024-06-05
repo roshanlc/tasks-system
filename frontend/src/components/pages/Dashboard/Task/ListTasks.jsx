@@ -43,7 +43,6 @@ const ListTaks = () => {
 
     // current task for edit or delete action
     const [selectedTask, setSelectedTask] = useState(null)
-    const [users, setUsers] = useState(null)
 
     // for pagination
     const [currentPage, setCurrentPage] = useState(1) // current page in pagination
@@ -73,29 +72,60 @@ const ListTaks = () => {
     const handleConfirmDelete = async () => {
         try {
             await axios
-                .delete(`${VITE_BACKEND_URL}/users/${userID}`, {
+                .delete(`${VITE_BACKEND_URL}/tasks/${selectedTask?.id}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 })
                 .then((response) => {
                     // Handle successful response
-                    console.log("User deleted:", response.data)
+                    console.log("Task deleted:", response.data)
                     setDeleteDialogOpen(false)
                     if (response.status === 200) {
-                        toast.success("User deleted successfully")
-                        // fetchUserList()
+                        refetch() // refetch list
+                        toast.success("Task deleted successfully")
                     } else {
-                        toast.error("Error deleting user")
+                        toast.error("Error deleting Task")
                     }
                 })
                 .catch(() => {
 
-                    toast.error("Error deleting user")
+                    toast.error("Error deleting Task")
                 })
         } catch (error) {
 
-            toast.error("Error deleting user")
+            toast.error("Error deleting Task")
+        }
+    }
+
+    // mark as complete
+    const handleMarkCompletion = async () => {
+        try {
+            await axios
+                .put(`${VITE_BACKEND_URL}/tasks/${selectedTask?.id}`, {
+                    ...selectedTask, completed: !selectedTask.completed
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+                .then((response) => {
+                    // Handle successful response
+                    console.log("Task updated:", response.data)
+                    setDeleteDialogOpen(false)
+                    if (response.status === 200) {
+                        refetch() // refetch list
+                        toast.success("Task updated successfully")
+                    } else {
+                        toast.error("Error updating Task")
+                    }
+                })
+                .catch(() => {
+
+                    toast.error("Error updating Task")
+                })
+        } catch (error) {
+            toast.error("Error updating Task")
         }
     }
 
@@ -147,9 +177,16 @@ const ListTaks = () => {
                         {tasks !== undefined && tasks !== null && tasks.map((item, id) => (
                             <Task key={id} task={item}
                                 editAction={() => {
-                                    console.log("pressed edit for ", item.id) // TODO: remove this later
                                     setSelectedTask(item)
                                     setEditDialogOpen(true)
+                                }}
+                                deletionAction={() => {
+                                    setSelectedTask(item)
+                                    setDeleteDialogOpen(true)
+                                }}
+                                markCompleteAction={() => {
+                                    setSelectedTask(item)
+                                    handleMarkCompletion()
                                 }}
 
                             />
@@ -167,53 +204,24 @@ const ListTaks = () => {
                 {/* Add task dialog */}
                 <AddTask dialogToggle={addUserToggle} setDialogToggle={setAddUserToggle} />
 
+                {/* Edit task dialog */}
                 <EditTask dialogToggle={editDialogOpen} setDialogToggle={setEditDialogOpen} task={selectedTask} refetch={refetch} />
 
                 {/* Delete Confirmation Dialog */}
-                {/* <Dialog
+                <Dialog
                     open={deleteDialogOpen}
                     onClose={handleCancelDelete}
                     maxWidth={"md"}
                     fullWidth
                 >
-                    <DialogTitle>Delete User</DialogTitle>
+                    <DialogTitle>Delete Task</DialogTitle>
                     <Divider />
                     <DialogContent>
-                        <Stack direction="column" gap={1}>
-                            {selectedTask !== undefined && selectedTask !== null && (
-                                <>
-                                    <Typography>Name: {selectedTask.name}</Typography>
-                                    <Typography>Email: {selectedTask.email}</Typography>
-
-                                    <Divider sx={{ marginTop: 1 }}>Assigned Roles</Divider>
-                                    <TableContainer>
-                                        <Table>
-                                            <TableHead>
-                                                <TableRow>
-                                                    <TableCell>Role</TableCell>
-                                                    <TableCell>Description</TableCell>
-                                                </TableRow>
-                                            </TableHead>
-                                            <TableBody>
-                                                {selectedTask.UserRoles.map((role, index) => (
-                                                    <TableRow key={index}>
-                                                        <TableCell>{role.role.name}</TableCell>
-                                                        <TableCell>{role.role.description}</TableCell>
-                                                    </TableRow>
-                                                ))}
-                                            </TableBody>
-                                        </Table>
-                                    </TableContainer>
-                                </>
-                            )}
-                        </Stack>
-                        <Divider />
                         <Typography variant="h5" sx={{ m: 1 }}>
-                            Are you sure you want to delete this user?
+                            Are you sure you want to delete this task?
                         </Typography>
                     </DialogContent>
                     <Divider sx={{ marginTop: 1 }} />
-
                     <DialogActions>
                         <Button
                             onClick={handleCancelDelete}
@@ -234,7 +242,7 @@ const ListTaks = () => {
                             Delete
                         </Button>
                     </DialogActions>
-                </Dialog> */}
+                </Dialog>
             </Box>
 
         </Box>

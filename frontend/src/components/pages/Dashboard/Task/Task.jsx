@@ -32,10 +32,12 @@ export default function Task({ task, editAction, markCompleteAction, deletionAct
                     onClick={editAction}>
                     <EditIcon color="primary" />
                 </IconButton>
-                <IconButton aria-label="mark-complete">
+                <IconButton aria-label="mark-complete" onClick={markCompleteAction}>
                     <DoneAllIcon color="success" />
                 </IconButton>
-                <IconButton aria-label="next" disabled={task?.completed || false}>
+                <IconButton aria-label="next"
+                    onClick={deletionAction}
+                >
                     <DeleteIcon color="error" />
                 </IconButton>
             </Stack>
