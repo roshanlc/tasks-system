@@ -1,11 +1,11 @@
-import ListUsers from "../Users/ListUsers"
+import ListTaks from "./Task/ListTasks"
 /**
  * Dashboard Component
  */
 const Dashboard = () => {
 
     return (
-        <ListUsers />
+        <ListTaks />
     )
 }
 
