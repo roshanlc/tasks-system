@@ -23,7 +23,7 @@ export default function EditTask({ task, dialogToggle, setDialogToggle, refetch 
             title: task?.title || "",
             description: task?.description || "",
         })
-    }, [])
+    }, [task])
 
     // update task details
     const handleUpdateTask = () => {

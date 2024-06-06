@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import axios from "axios"
 import { toast } from "react-toastify"
 import {
-    Typography, Button, Dialog, DialogTitle, DialogContent, DialogActions, Stack, Divider, Box, TextField, Pagination,
+    Button, Stack, Box, TextField, Pagination,
 } from "@mui/material"
 
 import AddCircleIcon from "@mui/icons-material/AddCircle"
@@ -26,7 +26,14 @@ const ListTaks = () => {
     const [editDialogOpen, setEditDialogOpen] = useState(false)
 
     // current task for edit or delete action
-    const [selectedTask, setSelectedTask] = useState(null)
+    const [selectedTask, setSelectedTask] = useState({
+        id: 0,
+        title: "",
+        description: "",
+        completed: null,
+        created_at: "",
+        user_id: 0,
+    })
 
     // for pagination
     const [currentPage, setCurrentPage] = useState(1) // current page in pagination
@@ -58,22 +65,20 @@ const ListTaks = () => {
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
 
     // mark as complete
-    const handleMarkCompletion = async () => {
+    const handleMarkCompletion = async (task) => {
+        task.completed = !task.completed
         try {
             await axios
-                .put(`${VITE_BACKEND_URL}/tasks/${selectedTask?.id}`, {
-                    ...selectedTask, completed: !selectedTask.completed
-                }, {
+                .put(`${VITE_BACKEND_URL}/tasks/${task?.id}`, task, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 })
                 .then((response) => {
-                    // Handle successful response
-                    setDeleteDialogOpen(false)
                     if (response.status === 200) {
+                        const msg = "Task marked " + (task.completed ? "as updated" : "as ongoing")
+                        toast.success(msg)
                         refetch() // refetch list
-                        toast.success("Task updated successfully")
                     } else {
                         toast.error("Error updating Task")
                     }
@@ -108,13 +113,12 @@ const ListTaks = () => {
         <Box>
             <Appbar />
             <Box
-                // display="flex"
                 flexDirection="column"
                 justifyContent="center"
                 alignItems="center"
-                // width={"80%"}
                 marginLeft={"10%"}
                 marginRight={"10%"}
+                marginTop={"2%"}
             >
                 <Stack direction="row" gap={2} mt={2}>
                     <Button
@@ -139,7 +143,7 @@ const ListTaks = () => {
                 ) : error ? (
                     <p>Error fetching tasks: {error.message}</p>
                 ) : (
-                    <Stack direction="column" gap={2} mt={1}>
+                    <Stack direction="column" gap={2} mt={2}>
                         {tasks !== undefined && tasks !== null && tasks.map((item, id) => (
                             <Task key={id} task={item}
                                 editAction={() => {
@@ -151,8 +155,7 @@ const ListTaks = () => {
                                     setDeleteDialogOpen(true)
                                 }}
                                 markCompleteAction={() => {
-                                    setSelectedTask(item)
-                                    handleMarkCompletion()
+                                    handleMarkCompletion(item)
                                 }}
 
                             />
