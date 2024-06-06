@@ -4,7 +4,7 @@ import { LoginContext } from "../../store/LoginProvider"
 const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL // fetching from .env file
 import { useQuery } from '@tanstack/react-query'
 
-const useTasks = (page = 1) => {
+const useTasks = (page = 1, searchText = "") => {
     const { loginState } = useContext(LoginContext)
 
     // default values for pagination
@@ -18,7 +18,13 @@ const useTasks = (page = 1) => {
         queryKey: ["tasks"],
         enabled: true,
         queryFn: async () => {
-            const url = `${VITE_BACKEND_URL}/tasks?page=${page}&size=${size}&sort=${sort}`
+            let url = `${VITE_BACKEND_URL}/tasks?page=${page}&size=${size}&sort=${sort}`
+
+            // for searching, add extra query param "search"
+            if (searchText.trim() != "") {
+                url += `&search=${searchText}`
+            }
+
             const response = await axios.get(
                 url,
                 {

@@ -2,27 +2,9 @@ import { useState, useEffect } from "react"
 import axios from "axios"
 import { toast } from "react-toastify"
 import {
-    Typography,
-    Button,
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogActions,
-    Stack,
-    Divider,
-    Box,
-    TableContainer,
-    Table,
-    TableHead,
-    TableRow,
-    TableCell,
-    TableBody,
-    TextField,
-    Pagination,
+    Typography, Button, Dialog, DialogTitle, DialogContent, DialogActions, Stack, Divider, Box, TextField, Pagination,
 } from "@mui/material"
-import DeleteIcon from "@mui/icons-material/Delete"
-import CloseIcon from "@mui/icons-material/Close"
-import AddIcon from "@mui/icons-material/Add"
+
 import AddCircleIcon from "@mui/icons-material/AddCircle"
 import { useContext } from "react"
 import { LoginContext } from "../../../../store/LoginProvider"
@@ -31,6 +13,9 @@ import Task from "./Task"
 import AddTask from "./AddTask"
 import useTasks from "../../../hooks/useTasks"
 import EditTask from "./EditTask"
+import SearchIcon from '@mui/icons-material/Search'
+import ClearAllIcon from '@mui/icons-material/ClearAll'
+import DeleteTask from "./DeleteTask"
 
 const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL // fetching from .env file
 
@@ -38,7 +23,6 @@ const ListTaks = () => {
     const { loginState } = useContext(LoginContext)
     const token = loginState.token
 
-    const [userID, setUserID] = useState(null)
     const [editDialogOpen, setEditDialogOpen] = useState(false)
 
     // current task for edit or delete action
@@ -48,13 +32,18 @@ const ListTaks = () => {
     const [currentPage, setCurrentPage] = useState(1) // current page in pagination
     const [totalPages, setTotalPages] = useState(1)
 
-    const [tasks, setTasks] = useState(null)
-    const { isLoading, error, data, refetch } = useTasks(currentPage)
+    // state to hold search state
+    const [isSearching, setIsSearching] = useState(false)
+    const [searchText, setSearchText] = useState("")
 
-    // call for refetch when current page is changed
+    const [tasks, setTasks] = useState(null)
+    const { isLoading, error, data, refetch } = useTasks(currentPage || 1, searchText?.trim() || "")
+
+
+    // call for refetch when current page is changed or searchText is changed
     useEffect(() => {
         refetch() // refetch the tasks
-    }, [currentPage, refetch])
+    }, [currentPage, isSearching, refetch])
 
     // change the tasks data
     useEffect(() => {
@@ -67,36 +56,6 @@ const ListTaks = () => {
 
     // for delete dialog
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
-
-    // delete a user
-    const handleConfirmDelete = async () => {
-        try {
-            await axios
-                .delete(`${VITE_BACKEND_URL}/tasks/${selectedTask?.id}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                })
-                .then((response) => {
-                    // Handle successful response
-                    console.log("Task deleted:", response.data)
-                    setDeleteDialogOpen(false)
-                    if (response.status === 200) {
-                        refetch() // refetch list
-                        toast.success("Task deleted successfully")
-                    } else {
-                        toast.error("Error deleting Task")
-                    }
-                })
-                .catch(() => {
-
-                    toast.error("Error deleting Task")
-                })
-        } catch (error) {
-
-            toast.error("Error deleting Task")
-        }
-    }
 
     // mark as complete
     const handleMarkCompletion = async () => {
@@ -111,7 +70,6 @@ const ListTaks = () => {
                 })
                 .then((response) => {
                     // Handle successful response
-                    console.log("Task updated:", response.data)
                     setDeleteDialogOpen(false)
                     if (response.status === 200) {
                         refetch() // refetch list
@@ -129,11 +87,20 @@ const ListTaks = () => {
         }
     }
 
-    const handleCancelDelete = () => {
-        // Close the delete confirmation dialog
-        setDeleteDialogOpen(false)
+    const handleSearchOrReset = async () => {
+        if (isSearching) {
+            // now for clearing search 
+            setSearchText("")
+            setCurrentPage(1) // get the frist page details
+            setIsSearching(false)
+        } else {
+            if (searchText.trim() == "") {
+                toast.warn("please provide a text to search")
+                return
+            }
+            setIsSearching(true)
+        }
     }
-
     // toggle for add user toggle
     const [addUserToggle, setAddUserToggle] = useState(false)
 
@@ -149,7 +116,7 @@ const ListTaks = () => {
                 marginLeft={"10%"}
                 marginRight={"10%"}
             >
-                <Stack direction="row" gap={2} mt={1}>
+                <Stack direction="row" gap={2} mt={2}>
                     <Button
                         variant="contained"
                         color="success"
@@ -157,15 +124,14 @@ const ListTaks = () => {
                         onClick={() => {
                             setAddUserToggle(true)
                         }}
-                        sx={{
-                            alignSelf: "center",
-                            padding: 1.5,
-                            margin: 1,
-                            // marginLeft: "auto",
-                        }}
                     >
                         Add Task
                     </Button>
+                    <TextField fullWidth label="Search" id="search" sx={{ width: "70%" }} value={searchText} onChange={(e) => {
+                        setSearchText((e.target.value).trim())
+
+                    }} />
+                    <Button startIcon={isSearching ? <ClearAllIcon /> : <SearchIcon />} variant="outlined" onClick={handleSearchOrReset}> {isSearching ? "Clear" : "Search"}  </Button>
                 </Stack>
                 {/* list tasks here */}
                 {isLoading ? (
@@ -208,43 +174,9 @@ const ListTaks = () => {
                 <EditTask dialogToggle={editDialogOpen} setDialogToggle={setEditDialogOpen} task={selectedTask} refetch={refetch} />
 
                 {/* Delete Confirmation Dialog */}
-                <Dialog
-                    open={deleteDialogOpen}
-                    onClose={handleCancelDelete}
-                    maxWidth={"md"}
-                    fullWidth
-                >
-                    <DialogTitle>Delete Task</DialogTitle>
-                    <Divider />
-                    <DialogContent>
-                        <Typography variant="h5" sx={{ m: 1 }}>
-                            Are you sure you want to delete this task?
-                        </Typography>
-                    </DialogContent>
-                    <Divider sx={{ marginTop: 1 }} />
-                    <DialogActions>
-                        <Button
-                            onClick={handleCancelDelete}
-                            startIcon={<CloseIcon />}
-                            variant="outlined"
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            onClick={handleConfirmDelete}
-                            variant="contained"
-                            style={{
-                                color: "white",
-                                backgroundColor: "red",
-                            }}
-                            startIcon={<DeleteIcon />}
-                        >
-                            Delete
-                        </Button>
-                    </DialogActions>
-                </Dialog>
-            </Box>
+                <DeleteTask dialogToggle={deleteDialogOpen} setDialogToggle={setDeleteDialogOpen} task={selectedTask} refetch={refetch} />
 
+            </Box>
         </Box>
     )
 }

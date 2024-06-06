@@ -126,7 +126,7 @@ const RegistrationForm = () => {
                     sx={{ marginTop: 2, marginBottom: 10 }}
                 >
                     <Box sx={{ marginTop: 2 }}>
-                        <Typography variant="h3">Todos - Get it done</Typography>
+                        <Typography variant="h3">Tasks - Get it done</Typography>
                         <Box marginTop={1}>
                             <Typography variant="h8">
                                 Sign up with your email and password
