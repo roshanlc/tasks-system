@@ -113,7 +113,7 @@ func (s *Server) loginHandler(ctx *gin.Context) {
 		User:  user,
 		Token: token,
 	}
-	ctx.JSON(http.StatusCreated, NewSuccessResponse(loginResp, nil))
+	ctx.JSON(http.StatusOK, NewSuccessResponse(loginResp, nil))
 }
 
 // authCheckHandler checks if the user is authenticated

@@ -65,7 +65,7 @@ func (repo *PostgresRepository) FindUserByEmail(email string) (*model.User, erro
 func (repo *PostgresRepository) InsertUser(user model.User) (*model.User, error) {
 	query := `INSERT INTO users(name, email, password)
 	VALUES ($1, $2, $3) 
-	RETURNING id, name, email, password, created_at`
+	RETURNING id, name, email, created_at`
 
 	// timeout context
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -73,8 +73,7 @@ func (repo *PostgresRepository) InsertUser(user model.User) (*model.User, error)
 
 	err := repo.ConnPool.QueryRow(ctx, query, user.Name, user.Email, user.Password).Scan(
 		&user.ID, &user.Name,
-		&user.Email, &user.Password,
-		&user.CreatedAt,
+		&user.Email, &user.CreatedAt,
 	)
 	// check for unique constraint violation
 	if err != nil {
