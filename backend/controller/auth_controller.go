@@ -48,6 +48,17 @@ func (s *Server) registrationHandler(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, NewErrorResponse(err.Error()))
 		return
 	}
+
+	// hash password
+	hashedPassword, err := auth.HashPassword(req.Password)
+	if err != nil {
+		log.Println("registrationHandler:: Internal Server Error: ", err)
+		ctx.JSON(http.StatusInternalServerError, NewErrorResponse(err.Error()))
+		return
+	}
+
+	// replace plain password with its hash
+	req.Password = hashedPassword
 	// create the user
 	user, err := s.service.CreateUser(req.ToUser())
 	if err != nil {

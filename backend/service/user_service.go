@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/roshanlc/todos_assignment/backend/model"
-	"github.com/roshanlc/todos_assignment/backend/utils/auth"
 )
 
 type IUserService interface {
@@ -29,14 +28,6 @@ func (s *Service) CreateUser(user *model.User) (*model.User, error) {
 		return nil, err
 	}
 
-	// hash password
-	hashedPassword, err := auth.HashPassword(user.Password)
-	if err != nil {
-		log.Println("CreateUser :: error hashing password: ", err)
-		return nil, err
-	}
-	// replace plain password with its hash
-	user.Password = hashedPassword
 	user, err = s.repository.InsertUser(*user)
 	if err != nil {
 		log.Println("CreateUser :: error inserting user: ", err)
