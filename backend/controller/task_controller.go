@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/roshanlc/todos_assignment/backend/model"
@@ -46,9 +47,24 @@ func (s *Server) listTaskHandler(ctx *gin.Context) {
 		return
 	}
 
+	// for search
+	isSearch := false
+	search := ctx.Query("search")
+	if strings.TrimSpace(search) != "" {
+		isSearch = true
+	}
+
 	// get user id from token
 	userDetails := GetDetailsFromHeader(ctx)
-	tasks, pagResp, err := s.service.GetTasksByUserID(userDetails.ID, &pag)
+	var tasks []model.Task
+	pagResp := &model.PaginationResponse{}
+	var err error
+
+	if isSearch {
+		tasks, pagResp, err = s.service.SearchTasksByUserID(userDetails.ID, search, &pag)
+	} else {
+		tasks, pagResp, err = s.service.GetTasksByUserID(userDetails.ID, &pag)
+	}
 	if err != nil {
 		log.Println("listTaskHandler:: Internal Server Error: ", err)
 		ctx.JSON(http.StatusInternalServerError, NewErrorResponse(err.Error()))
