@@ -45,12 +45,13 @@ const ListTaks = () => {
 
     const [tasks, setTasks] = useState(null)
     const { isLoading, error, data, refetch } = useTasks(currentPage || 1, searchText?.trim() || "")
+    const [toRefetch, setToRefetch] = useState(false)
 
 
     // call for refetch when current page is changed or searchText is changed
     useEffect(() => {
         refetch() // refetch the tasks
-    }, [currentPage, isSearching, refetch])
+    }, [currentPage, isSearching, refetch, toRefetch])
 
     // change the tasks data
     useEffect(() => {
@@ -74,17 +75,21 @@ const ListTaks = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 })
-                .then((response) => {
+                .then(async (response) => {
                     if (response.status === 200) {
-                        const msg = "Task marked " + (task.completed ? "as updated" : "as ongoing")
-                        toast.success(msg)
-                        refetch() // refetch list
+                        if (task.completed) {
+                            const msg = "Task marked as completed"
+                            toast.success(msg)
+                        }else{
+                            const msg = "Task marked as on-going"
+                            toast.info(msg)
+                        }
+                        setToRefetch((prev) => !prev) // refetch list
                     } else {
                         toast.error("Error updating Task")
                     }
                 })
                 .catch(() => {
-
                     toast.error("Error updating Task")
                 })
         } catch (error) {

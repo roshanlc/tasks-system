@@ -35,7 +35,6 @@ export default function EditTask({ task, dialogToggle, setDialogToggle, refetch 
             })
             .then((response) => {
                 // Handle successful response
-                console.log("Task updated:", response.data)
                 setDialogToggle(false)
                 if (response.status === 200) {
                     toast.success("Task updated successfully")
