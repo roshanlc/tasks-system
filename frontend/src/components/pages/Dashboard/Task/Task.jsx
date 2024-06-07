@@ -28,14 +28,14 @@ export default function Task({ task, editAction, markCompleteAction, deletionAct
             </Box>
             <Divider />
             <Stack direction="row" sx={{ float: 'right', marginRight: 3 }}>
-                <IconButton aria-label="edit" disabled={task?.completed || false}
+                <IconButton id="edit" aria-label="edit" disabled={task?.completed || false}
                     onClick={editAction}>
                     <EditIcon color="primary" />
                 </IconButton>
-                <IconButton aria-label="mark-complete" onClick={markCompleteAction}>
+                <IconButton id="mark-complete" aria-label="mark-complete" onClick={markCompleteAction}>
                     <DoneAllIcon color="success" />
                 </IconButton>
-                <IconButton aria-label="next"
+                <IconButton id="delete" aria-label="delete"
                     onClick={deletionAction}
                 >
                     <DeleteIcon color="error" />
