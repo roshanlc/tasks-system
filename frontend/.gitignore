@@ -28,3 +28,4 @@ todo.md
 .env
 .env.local
 .env.production
+test-results
