@@ -6,6 +6,8 @@ import (
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/roshanlc/todos_assignment/backend/external"
+	"github.com/roshanlc/todos_assignment/backend/model"
+	"github.com/roshanlc/todos_assignment/backend/utils/auth"
 )
 
 // Repository is the interface that wraps the basic CRUD operations
@@ -38,5 +40,17 @@ func (r *PostgresRepository) InitialSetup() error {
 	if err != nil {
 		return err
 	}
+
+	// insert dummy login user
+	if _, err := r.FindUserByEmail("john.doe@email.com"); err == model.ErrRecordNotFound {
+		hashPw, _ := auth.HashPassword("password")
+		user := model.User{
+			Name:     "John Doe",
+			Email:    "john.doe@email.com",
+			Password: hashPw,
+		}
+		_, _ = r.InsertUser(user)
+	}
+
 	return nil
 }
