@@ -1,8 +1,31 @@
 # Tasks management
 
+### Details:
+- Database: postgres
+- Backend: Go 
+- Frontend: React
+
+## 1. Run Application
+- Make sure you have docker compose installed on your machine
+- Follow the steps
+  ```bash
+  # clone the repository
+  git clone https://github.com/roshanlc/tasks-system
+
+  cd tasks-system
+
+  # run the compose file
+  docker compose up
+
+  # Might take a minute or two depending on your system
+  # Backend will be live at: http://localhost:9000
+  # Frontend will be  live at: http://localhost:9001
+  ```
+
+## 2. Run Tests
+
 ## Backend
 
-1. Run tests
 ```bash
 cd backend
 
@@ -13,5 +36,11 @@ go test ./controller -v
 go test ./service -v
 ```
 
-2. Run
->`Please follow the instructions above to run directly with docker compose.`
+## Frontend
+- Make sure the system is up
+```bash
+cd frontend
+
+# run tests
+pnpm run test
+```

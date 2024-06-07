@@ -1,0 +1,50 @@
+# Author: Roshan Lamichhane
+services:
+  postgres:
+    image: postgres:16.0-alpine3.17
+    container_name: postgres-go
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=test1234
+      - POSTGRES_DB=tasks
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 2s
+      retries: 5
+    networks:
+      - home
+
+  backend:
+    build: ./backend
+    container_name: tasks-backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "9000:9000"
+    environment:
+      - DATABASE_URL=postgres://postgres:test1234@postgres-go:5432/tasks
+      - GIN_MODE=release
+      - PORT=9000
+      - SECRET_KEY=tasks1-203e9n39n39n3ugb947bf398nf938h98
+    networks:
+      - home
+
+  frontend:
+    build: ./frontend
+    container_name: tasks-frontend
+    depends_on:
+      backend:
+        condition: service_started
+    ports:
+      - "9001:9001"
+    environment:
+      - VITE_BACKEND_URL=http://localhost:9000/api/v1
+    networks:
+      - home
+
+networks:
+  home:
+    name: home
