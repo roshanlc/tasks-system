@@ -44,3 +44,6 @@ cd frontend
 # run tests
 pnpm run test
 ```
+
+### Postman collection
+- Please find the postman collection [here](./Tasks-mgmt-app.postman_collection.json)
